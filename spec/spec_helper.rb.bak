@@ -3,47 +3,21 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'capybara/poltergeist'
 
-require 'socket'
-caps = Selenium::WebDriver::Remote::Capabilities.chrome
-# caps.version = "8"
-caps.platform = :WINDOWS
-
-Capybara.server_port = 3010
-Capybara.default_driver = :selenium
-host = 10.242.1.187
-port = 4444
-
-ip = Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)[0][3]
-Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
 Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(
-    app,
-    :browser => :remote,
-    :url => "http://#{host}:#{port}/wd/hub",
-    :desired_capabilities => caps
-    )
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
 end
-
-# Capybara local run
-# Capybara.register_driver :selenium do |app|
-#   Capybara::Selenium::Driver.new(app, :browser => :chrome)
-# # end
  
-# Capybara.default_driver = :selenium
-
-# require 'capybara/poltergeist'
-# Capybara.default_driver = :poltergeist
+Capybara.default_driver = :selenium
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
-  config.include Capybara::RSpecMatchers
-  config.include Capybara::DSL
   config.include Rails.application.routes.url_helpers
-
+  config.use_transactional_fixtures = false
   config.after do
     Capybara.reset_sessions!
     Capybara.use_default_driver
@@ -74,4 +48,6 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+
 end

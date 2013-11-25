@@ -5,7 +5,10 @@ gem 'bootstrap-sass', '2.1'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'
-  gem 'rspec-rails', '2.11.0'
+  gem 'rspec-rails', '~> 2.0'
+  gem 'selenium-webdriver'
+  gem 'poltergeist'
+  gem 'cucumber-rails', :require => false
 end
 
 # Gems used only for assets and not required
@@ -19,7 +22,8 @@ end
 gem 'jquery-rails', '2.0.2'
 
 group :test do
-  gem 'capybara', '1.1.2'
+  gem "capybara", "~> 2.1.0"
+  gem 'database_cleaner'
 end
 
 group :production do
