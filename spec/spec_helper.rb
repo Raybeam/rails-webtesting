@@ -11,8 +11,8 @@ caps.platform = :WINDOWS
 
 Capybara.server_port = 3010
 Capybara.default_driver = :selenium
-host = 10.242.1.187
-port = 4444
+host = "10.242.1.187"
+port = "4444"
 
 ip = Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)[0][3]
 Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
