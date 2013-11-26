@@ -18,11 +18,7 @@ require 'system/getifaddrs'
 
 # init ip
 ip = "127.0.0.1"
-System.get_ifaddrs.each do |key, value|
-  if value[:inet_addr] != "127.0.0.1"
-    ip = value[:inet_addr]
-  end
-end
+ip = System.get_ifaddrs.find{ |socket| socket[1][:inet_addr] != "127.0.0.1" } [1][:inet_addr]
 
 Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
 Capybara.register_driver :selenium do |app|
