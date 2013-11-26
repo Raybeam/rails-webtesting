@@ -14,7 +14,7 @@ Capybara.default_driver = :selenium
 host = "10.242.1.187"
 port = "4444"
 
-ip = Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)[0][3]
+ip = System.get_ifaddrs[:en0][:inet_addr] # Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)[0][3]
 Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(
