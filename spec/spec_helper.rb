@@ -25,7 +25,7 @@ require 'system/getifaddrs'
 ip = "127.0.0.1"
 ip = System.get_ifaddrs.find{ |socket| socket[1][:inet_addr] != "127.0.0.1" } [1][:inet_addr]
 
-# Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
+Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(
     app,
