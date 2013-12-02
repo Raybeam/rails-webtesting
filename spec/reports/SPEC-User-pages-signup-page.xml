@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="User pages signup page" tests="2" time="1.591608" failures="0" errors="0" skipped="0">
+  <testcase name="User pages signup page should have css &quot;h1&quot; with text &quot;Sign up&quot;" time="0.783396">
+  </testcase>
+  <testcase name="User pages signup page should have title &quot;Ruby on Rails Tutorial Sample App | Sign up&quot;" time="0.807453">
+  </testcase>
+  <system-out>
+  </system-out>
+  <system-err>
+  </system-err>
+</testsuite>

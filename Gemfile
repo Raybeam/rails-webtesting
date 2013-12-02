@@ -8,10 +8,15 @@ gem "system-getifaddrs", "~> 0.2.0"
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'
+
   gem 'rspec-rails', '~> 2.0'
   gem 'selenium-webdriver'
+
   gem 'poltergeist'
+  
   gem 'cucumber-rails', :require => false
+
+  gem 'ci_reporter'
 end
 
 # Gems used only for assets and not required

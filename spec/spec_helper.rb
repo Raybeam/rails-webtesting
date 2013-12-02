@@ -4,6 +4,9 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 
+
+require 'capybara/rails'
+
 # require 'socket'
 caps = Selenium::WebDriver::Remote::Capabilities.chrome
 # caps.version = "8"
@@ -11,6 +14,8 @@ caps.platform = :WINDOWS
 
 Capybara.server_port = 3010
 Capybara.default_driver = :selenium
+# require 'capybara/poltergeist'
+# Capybara.default_driver = :poltergeist
 host = "10.242.1.187"
 port = "4444"
 
@@ -20,25 +25,22 @@ require 'system/getifaddrs'
 ip = "127.0.0.1"
 ip = System.get_ifaddrs.find{ |socket| socket[1][:inet_addr] != "127.0.0.1" } [1][:inet_addr]
 
-Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
-Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(
-    app,
-    :browser => :remote,
-    :url => "http://#{host}:#{port}/wd/hub",
-    :desired_capabilities => caps
-    )
-end
+# Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
+# Capybara.register_driver :selenium do |app|
+#   Capybara::Selenium::Driver.new(
+#     app,
+#     :browser => :remote,
+#     :url => "http://#{host}:#{port}/wd/hub",
+#     :desired_capabilities => caps
+#     )
+# end
 
 # Capybara local run
-# Capybara.register_driver :selenium do |app|
-#   Capybara::Selenium::Driver.new(app, :browser => :chrome)
-# # end
- 
-# Capybara.default_driver = :selenium
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
 
-# require 'capybara/poltergeist'
-# Capybara.default_driver = :poltergeist
+
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

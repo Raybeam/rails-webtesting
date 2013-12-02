@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Static pages Home page" tests="3" time="4.591502" failures="0" errors="0" skipped="0">
+  <testcase name="Static pages Home page should have h1 element with text Sample App" time="2.797495">
+  </testcase>
+  <testcase name="Static pages Home page should have default title" time="0.875439">
+  </testcase>
+  <testcase name="Static pages Home page should not have default title for Home" time="0.917815">
+  </testcase>
+  <system-out>
+Static pages Home page
+./spec/feature/static_pages_spec.rb:16
+should have h1 element with text Sample App
+Static pages Home page should have h1 element with text Sample App
+Static pages Home page
+./spec/feature/static_pages_spec.rb:20
+should have default title
+Static pages Home page should have default title
+Static pages Home page
+./spec/feature/static_pages_spec.rb:23
+should not have default title for Home
+Static pages Home page should not have default title for Home
+  </system-out>
+  <system-err>
+  </system-err>
+</testsuite>
