@@ -7,10 +7,6 @@ describe "Static pages" do
   describe "Home page" do
     before { visit root_path }
     after {
-      puts example.metadata[:example_group][:full_description]
-      puts example.location
-      puts example.description
-      puts example.full_description
       save_screenshot("#{example.full_description}.png")
     }
     it "should have h1 element with text Sample App" do
