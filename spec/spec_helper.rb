@@ -26,19 +26,19 @@ ip = "127.0.0.1"
 ip = System.get_ifaddrs.find{ |socket| socket[1][:inet_addr] != "127.0.0.1" } [1][:inet_addr]
 
 # Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
-# Capybara.register_driver :selenium do |app|
-#   Capybara::Selenium::Driver.new(
-#     app,
-#     :browser => :remote,
-#     :url => "http://#{host}:#{port}/wd/hub",
-#     :desired_capabilities => caps
-#     )
-# end
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(
+    app,
+    :browser => :remote,
+    :url => "http://#{host}:#{port}/wd/hub",
+    :desired_capabilities => caps
+    )
+end
 
 # Capybara local run
-Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome)
-end
+# Capybara.register_driver :selenium do |app|
+#   Capybara::Selenium::Driver.new(app, :browser => :chrome)
+# end
 
 
 
