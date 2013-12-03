@@ -6,19 +6,19 @@ describe "Static pages" do
 
   describe "Home page" do
     before { visit root_path }
-    after {
-      save_screenshot("#{example.full_description}.png")
-    }
-    it "should have h1 element with text Sample App" do
-      should have_selector('h1',    text: 'Sample App')
-    end
+    # after {
+    #   save_screenshot("#{example.full_description}.png")
+    # }
+    # it "should have h1 element with text Sample App" do
+    #   should have_selector('h1',    text: 'Sample App')
+    # end
 
     it "should have default title" do
-      should have_title(full_title(''))
+      should have_title(full_title('abc'))
     end
-    it "should not have default title for Home" do
-      should_not have_title('| Home')
-    end
+    # it "should not have default title for Home" do
+    #   should_not have_title('| Home')
+    # end
   end
 
   # describe "Help page" do

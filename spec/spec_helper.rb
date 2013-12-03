@@ -4,8 +4,9 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 
-
+require "selenium-webdriver"
 require 'capybara/rails'
+
 
 # require 'socket'
 caps = Selenium::WebDriver::Remote::Capabilities.chrome
