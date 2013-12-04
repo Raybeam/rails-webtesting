@@ -18,6 +18,7 @@ describe "Static pages" do
     it "should have default title" do
       should have_title(full_title(''))
     end
+    
     describe "title" do
       it "should not have default title for Home" do
         should_not have_title('| Home')
