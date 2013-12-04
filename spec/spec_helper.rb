@@ -10,11 +10,9 @@ require 'rspec/autorun'
 
 
 
-# caps = Selenium::WebDriver::Remote::Capabilities.chrome
-# # caps.version = "8"
-# caps.platform = :WINDOWS
 
-# Capybara.server_port = 3010
+
+
 Capybara.default_driver = :selenium
 
 
@@ -22,11 +20,15 @@ Capybara.default_driver = :selenium
 require 'system/getifaddrs'
 
 # # init ip
+caps = Selenium::WebDriver::Remote::Capabilities.chrome
+# caps.version = "8"
+caps.platform = :WINDOWS
 host = "10.242.1.187"
 port = "4444"
 ip = System.get_ifaddrs.find{ |socket| socket[1][:inet_addr] != "127.0.0.1" } [1][:inet_addr]
 
 Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
+Capybara.server_port = 3010
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(
     app,
