@@ -73,13 +73,9 @@ RSpec.configure do |config|
   config.after(:each) do
     # puts example.metadata[:description_args].join('')
 
-    
-    save_snapshot(example,"final")
+    result_name = example.exception ? "failure" : "final"
 
-
-    if example.exception
-
-    end
+    save_snapshot(example,result_name)
   end
   # ## Mock Framework
   #

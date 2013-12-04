@@ -91,9 +91,8 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
     @output.puts "      </div>"
 
     @output.puts "<div class=\"screenshots\">"
-    print_screenshot(example)
     @output.puts "</div>"
-
+    print_screenshot(example)
     @output.puts "    </dd>"
 
     @output.flush
@@ -112,34 +111,6 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
 
     example.metadata[:id] = @example_number
     FileUtils.mkdir_p(path_to_tmp(example)) unless File.exists?(path_to_tmp(example))
-    # @output.puts example.metadata[:id]
-    # @output.flush
-
-    # puts path_to_screenshot(example)
-    # groups = []
-
-    # # metadata maintains example_group structure as nested example_groups from inner to outer
-    # # so we build array from inner to outer and then reverse it
-    # puts "abc"
-    # # puts example.metadata.to_s
-    # puts example.metadata[:description_args].join('').gsub('"','').gsub('|', '')
-    # puts "def"
-    # groups << example.metadata[:description_args].join('').gsub('"','').gsub('|', '')
-    # current_group = example.metadata[:example_group]
-    # while (!current_group.nil?) do
-    #   groups << current_group[:description]
-    #   puts current_group[:description]
-    #   current_group = current_group[:example_group]
-    # end
-
-    # groups << $base_screenshot_dir
-
-    # path_to_screenshot = groups.reverse.join('/')
-    #  @output.puts example.metadata.to_s
-    #  @output.flush
-
-    # FileUtils.mkdir_p(path_to_screenshot) unless File.exists?(path_to_screenshot)
-
     
   end
 
@@ -150,19 +121,19 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
 
     if file_count > 0 then @output.puts "<table>" end
 
-    Dir[File.join(example.metadata[:screenshot_path], '*.html')].each do |path|
+    Dir[File.join(example.metadata[:screenshot_path], '*.html')].sort_by{|filename| File.mtime(filename) }.each do |path|
       if curr_column == 0 then @output.puts "<tr>" end
       @output.puts "  <td>"
 
       path_to_html = Pathname.new(path).relative_path_from(Pathname.new(@output_dir))
       path_to_img = File.join(path_to_html.dirname, File.basename(path_to_html.basename, '.*')) + '.png'
       if File.exist?(path_to_img)
-        @output.puts "    <a href=\"#{path_to_img}\">"
+        @output.puts "    <a href=\"#{path_to_img}\" style=\"text-decoration: none;\">"
         @output.puts "      <img src=\"#{path_to_img}\" alt=\"#{item}\" height=\"100\" width=\"100\">"
         @output.puts "    </a>"
         @output.puts "    </br>"
       end
-      @output.puts "    <a href=\"#{path_to_html}\">"
+      @output.puts "    <a href=\"#{path_to_html}\" style=\"text-decoration: none;\">"
       @output.puts "      <pre align=\"center\">#{File.basename(path, '.*')}</pre>"
       @output.puts "    </a>"
       @output.puts "  </td>"
@@ -200,29 +171,6 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
     description = File.extname(file_name).upcase[1..-1]
     path = Pathname.new(file_name)
     "<a href='#{path.relative_path_from(Pathname.new(@output_dir))}'>#{description}</a>&nbsp;"
-  end
-
-  def save_html
-    begin
-      html = "abc" # page.html
-      file_name = file_path("browser.html")
-      File.open(file_name, 'w') {|f| f.puts html}
-    rescue => e
-      $stderr.puts "saving of html failed: #{e.message}"
-      $stderr.puts e.backtrace
-    end
-    file_name
-  end
-
-  def save_screenshot
-    begin
-      file_name = "abc" # "#{example.full_description}.png"
-      # page.save_screenshot(file_name)
-    rescue => e
-      $stderr.puts "saving of screenshot failed: #{e.message}"
-      $stderr.puts e.backtrace
-    end
-    file_name
   end
   
   def file_path(file_name)

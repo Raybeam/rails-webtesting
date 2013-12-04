@@ -7,6 +7,7 @@ describe "Static pages" do
   describe "Home page" do
     before {
       visit root_path
+      save_snapshot(example,"start")
     }
     # after {
     #   save_screenshot("#{path_to_screenshot(example)}/end.png")
@@ -16,7 +17,7 @@ describe "Static pages" do
     # end
 
     it "should have default title", :js => true do
-      should have_title(full_title(''))
+      should have_title(full_title('abc'))
     end
 
     describe "title" do
