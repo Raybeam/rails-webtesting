@@ -12,8 +12,8 @@ require 'rspec/autorun'
 
 
 
-
-Capybara.default_driver = :selenium
+Capybara.javascript_driver = :selenium
+Capybara.default_driver = :rack_test
 
 
 # Capybara remote run
@@ -51,14 +51,31 @@ end
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+
+
 RSpec.configure do |config|
   config.include Capybara::RSpecMatchers
   config.include Capybara::DSL
   config.include Rails.application.routes.url_helpers
 
-  config.after do
-    Capybara.reset_sessions!
-    Capybara.use_default_driver
+  # use default driver on all tests
+  # config.after do
+  #   Capybara.reset_sessions!
+  #   Capybara.use_default_driver
+  # end
+
+  config.after(:each) do
+    if example.metadata[:js]
+      meta = example.metadata
+      filename = File.basename(meta[:file_path])
+      # line_number = meta[:line_number]
+      # screenshot_name = "screenshot-#{filename}-#{line_number}.png"
+      # screenshot_path = "#{Rails.root.join("tmp")}/#{screenshot_name}"
+
+      page.save_screenshot("#{path_to_screenshot(example)}/end.png")
+ 
+      # puts meta[:full_description] + "\n  Screenshot: #{screenshot_path}"
+    end
   end
   # ## Mock Framework
   #

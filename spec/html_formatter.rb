@@ -1,6 +1,7 @@
 require 'rspec/core/formatters/html_formatter'
 require 'erb'
 require_relative 'support/utilities'
+# require_relative 'support/helpers'
 
 
 
@@ -21,11 +22,11 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
     @printer.move_progress(percent_done)
     @printer.flush
 
-    description = example.description
+    description = example.metadata[:description_args].join('')
     run_time = example.execution_result[:run_time]
     formatted_run_time = sprintf("%.5f", run_time)
-    @output.puts "    <dd class=\"example passed\"><span class=\"passed_spec_name\">#{h(example.description)}</span><span class='duration'>#{formatted_run_time}s</span>"
-    # @output.puts "</br>#{example.metadata.to_s}"
+    @output.puts "    <dd class=\"example passed\"><span class=\"passed_spec_name\">#{h(description)}</span><span class='duration'>#{formatted_run_time}s</span>"
+    #@output.puts "</br>#{example.metadata.to_s}"
     @output.puts "</dd>"
 
 
@@ -50,10 +51,11 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
 
       exception = example.metadata[:execution_result][:exception]
       exception_details = if exception
-        {
-          :message => exception.class.to_s + "\n" + exception.message,
-          :backtrace => format_backtrace(exception.backtrace, example).join("\n")
-        }
+      {
+        :class => exception.class.to_s,
+        :message => exception.message,
+        :backtrace => format_backtrace(exception.backtrace, example).join("\n")
+      }
       else
         false
       end
@@ -75,6 +77,7 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
       @output.puts "      <span class=\"duration\">#{formatted_run_time}s</span>"
       @output.puts "      <div class=\"failure\" id=\"failure_#{failure_id}\">"
       if exception
+        @output.puts "        <div class=\"class\"><pre>#{h(exception[:class])}</pre></div>"
         @output.puts "        <div class=\"message\"><pre>#{h(exception[:message])}</pre></div>"
         if escape_backtrace
           @output.puts "        <div class=\"backtrace\"><pre>#{h exception[:backtrace]}</pre></div>"
@@ -99,9 +102,11 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
   end
 
   def example_started(example)
-    super(example)
+    groups = []
 
-      groups = []
+    # metadata maintains example_group structure as nested example_groups from inner to outer
+    # so we build array from inner to outer and then reverse it
+    groups << example.description.gsub('./','').gsub('/','.').gsub(':','-')
     current_group = example.metadata[:example_group]
     while (!current_group.nil?) do
       groups << current_group[:description]
@@ -111,8 +116,12 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
     groups << $base_screenshot_dir
 
     path_to_screenshot = groups.reverse.join('/')
-    
+     # @output.puts example.description
+     # @output.flush
+
     FileUtils.mkdir_p(path_to_screenshot) unless File.exists?(path_to_screenshot)
+
+    super(example)
   end
 
   def example_pending(example)
