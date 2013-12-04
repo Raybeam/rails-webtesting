@@ -64,17 +64,21 @@ RSpec.configure do |config|
   #   Capybara.use_default_driver
   # end
 
-  config.after(:each) do
-    if example.metadata[:js]
-      meta = example.metadata
-      filename = File.basename(meta[:file_path])
-      # line_number = meta[:line_number]
-      # screenshot_name = "screenshot-#{filename}-#{line_number}.png"
-      # screenshot_path = "#{Rails.root.join("tmp")}/#{screenshot_name}"
+  config.before(:each) do
+    # puts path_to_screenshot(example)
 
-      page.save_screenshot("#{path_to_screenshot(example)}/end.png")
- 
-      # puts meta[:full_description] + "\n  Screenshot: #{screenshot_path}"
+    # FileUtils.mkdir_p(path_to_screenshot(example)) unless File.exists?(path_to_screenshot(example))
+  end
+
+  config.after(:each) do
+    # puts example.metadata[:description_args].join('')
+
+    
+    save_snapshot(example,"final")
+
+
+    if example.exception
+
     end
   end
   # ## Mock Framework
