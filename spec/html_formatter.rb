@@ -11,8 +11,6 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
   def initialize(output)
     # raise "output has to be a file path!" unless output.is_a?(String)
     @output_dir = File.dirname(output)
-    @files_dir = File.join(@output_dir, "files")
-    FileUtils.mkdir_p(@files_dir) unless File.exists?(@files_dir)
 
     FileUtils.rm_rf($base_screenshot_dir)
     super
@@ -172,12 +170,4 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
     path = Pathname.new(file_name)
     "<a href='#{path.relative_path_from(Pathname.new(@output_dir))}'>#{description}</a>&nbsp;"
   end
-  
-  def file_path(file_name)
-    extension = File.extname(file_name)
-    basename = File.basename(file_name, extension)
-    file_path = File.join(@files_dir, "#{basename}_#{Time.now.strftime("%H%M%S")}_#{example_group_number}_#{example_number}#{extension}")
-    file_path
-  end
-
 end
