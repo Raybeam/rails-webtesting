@@ -124,10 +124,14 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
       @output.puts "  <td>"
 
       path_to_html = Pathname.new(path).relative_path_from(Pathname.new(@output_dir))
-      path_to_img = File.join(path_to_html.dirname, File.basename(path_to_html.basename, '.*')) + '.png'
-      if File.exist?(path_to_img)
-        @output.puts "    <a href=\"#{path_to_img}\" style=\"text-decoration: none;\">"
-        @output.puts "      <img src=\"#{path_to_img}\" alt=\"#{item}\" height=\"100\" width=\"100\">"
+      file_name_no_extension = File.basename(path_to_html.basename, '.*')
+      directory = Pathname.new(path).dirname
+      relative_path_to_img = File.join(path_to_html.dirname, file_name_no_extension) + '.png'
+      absolute_path_to_img = File.join(directory, file_name_no_extension) + '.png'
+      
+      if File.file?(absolute_path_to_img)
+        @output.puts "    <a href=\"#{relative_path_to_img}\" style=\"text-decoration: none;\">"
+        @output.puts "      <img src=\"#{relative_path_to_img}\" alt=\"#{item}\" height=\"100\" width=\"100\">"
         @output.puts "    </a>"
         @output.puts "    </br>"
       end
