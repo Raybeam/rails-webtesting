@@ -18,7 +18,7 @@ class ParallelTests::RSpec::LoggerBase < ParallelTests::RSpec::LoggerBaseBase
 
   def initialize(*args)
     super
-
+    
     @output ||= args[1] || args[0] # rspec 1 has output as second argument
 
     if String === @output # a path ?

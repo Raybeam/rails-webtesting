@@ -8,12 +8,14 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
   include ERB::Util
 
   def initialize(output)
+    super
+
     # raise "output has to be a file path!" unless output.is_a?(String)
-    @output_dir = File.dirname(output)
+    @output_dir = File.dirname(@output)
 
     FileUtils.rm_rf($base_screenshot_dir)
     # puts %[hello from process #{ENV[:TEST_ENV_NUMBER.to_s].inspect}]
-    super
+    
   end
 
   def example_passed(example)
@@ -23,13 +25,13 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
     description = example.metadata[:description_args].join('')
     run_time = example.execution_result[:run_time]
     formatted_run_time = sprintf("%.5f", run_time)
-    @output.puts "    <dd class=\"example passed\"><span class=\"passed_spec_name\">#{h(description)}</span><span class='duration'>#{formatted_run_time}s</span>"
+    @buffer.puts "    <dd class=\"example passed\"><span class=\"passed_spec_name\">#{h(description)}</span><span class='duration'>#{formatted_run_time}s</span>"
     
-    @output.puts "<div class=\"screenshots\">"
+    @buffer.puts "<div class=\"screenshots\">"
     print_screenshot(example)
-    @output.puts "</div>"
+    @buffer.puts "</div>"
 
-    @output.puts "</dd>"
+    @buffer.puts "</dd>"
   end
 
   def example_failed(example)
@@ -67,26 +69,26 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
     escape_backtrace = true
     formatted_run_time = sprintf("%.5f", run_time)
 
-    @output.puts "    <dd class=\"example #{pending_fixed ? 'pending_fixed' : 'failed'}\">"
-    @output.puts "      <span class=\"failed_spec_name\">#{h(description)}</span>"
-    @output.puts "      <span class=\"duration\">#{formatted_run_time}s</span>"
-    @output.puts "      <div class=\"failure\" id=\"failure_#{failure_id}\">"
+    @buffer.puts "    <dd class=\"example #{pending_fixed ? 'pending_fixed' : 'failed'}\">"
+    @buffer.puts "      <span class=\"failed_spec_name\">#{h(description)}</span>"
+    @buffer.puts "      <span class=\"duration\">#{formatted_run_time}s</span>"
+    @buffer.puts "      <div class=\"failure\" id=\"failure_#{failure_id}\">"
     if exception
-      @output.puts "        <div class=\"class\"><pre>#{h(exception[:class])}</pre></div>"
-      @output.puts "        <div class=\"message\"><pre>#{h(exception[:message])}</pre></div>"
+      @buffer.puts "        <div class=\"class\"><pre>#{h(exception[:class])}</pre></div>"
+      @buffer.puts "        <div class=\"message\"><pre>#{h(exception[:message])}</pre></div>"
       if escape_backtrace
-        @output.puts "        <div class=\"backtrace\"><pre>#{h exception[:backtrace]}</pre></div>"
+        @buffer.puts "        <div class=\"backtrace\"><pre>#{h exception[:backtrace]}</pre></div>"
       else
-        @output.puts "        <div class=\"backtrace\"><pre>#{exception[:backtrace]}</pre></div>"
+        @buffer.puts "        <div class=\"backtrace\"><pre>#{exception[:backtrace]}</pre></div>"
       end
     end
-    @output.puts extra_content if extra_content
-    @output.puts "      </div>"
+    @buffer.puts extra_content if extra_content
+    @buffer.puts "      </div>"
 
-    @output.puts "<div class=\"screenshots\">"
-    @output.puts "</div>"
+    @buffer.puts "<div class=\"screenshots\">"
+    @buffer.puts "</div>"
     print_screenshot(example)
-    @output.puts "    </dd>"
+    @buffer.puts "    </dd>"
   end
 
   def example_group_started(example_group)
@@ -109,11 +111,11 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
     max_columns = 8
     curr_column = 0
 
-    if file_count > 0 then @output.puts "<table>" end
+    if file_count > 0 then @buffer.puts "<table>" end
 
     Dir[File.join(example.metadata[:screenshot_path], '*.html')].sort_by{|filename| File.mtime(filename) }.each do |path|
-      if curr_column == 0 then @output.puts "<tr>" end
-      @output.puts "  <td>"
+      if curr_column == 0 then @buffer.puts "<tr>" end
+      @buffer.puts "  <td>"
 
       path_to_html = Pathname.new(path).relative_path_from(Pathname.new(@output_dir))
       file_name_no_extension = File.basename(path_to_html.basename, '.*')
@@ -122,21 +124,21 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
       absolute_path_to_img = File.join(directory, file_name_no_extension) + '.png'
       
       if File.file?(absolute_path_to_img)
-        @output.puts "    <a href=\"#{relative_path_to_img}\" style=\"text-decoration: none;\">"
-        @output.puts "      <img src=\"#{relative_path_to_img}\" alt=\"#{item}\" height=\"100\" width=\"100\">"
-        @output.puts "    </a>"
-        @output.puts "    </br>"
+        @buffer.puts "    <a href=\"#{relative_path_to_img}\" style=\"text-decoration: none;\">"
+        @buffer.puts "      <img src=\"#{relative_path_to_img}\" alt=\"#{item}\" height=\"100\" width=\"100\">"
+        @buffer.puts "    </a>"
+        @buffer.puts "    </br>"
       end
-      @output.puts "    <a href=\"#{path_to_html}\" style=\"text-decoration: none;\">"
-      @output.puts "      <pre align=\"center\">#{File.basename(path, '.*')}</pre>"
-      @output.puts "    </a>"
-      @output.puts "  </td>"
-      if curr_column == (max_columns - 1) then @output.puts "</tr>" end
+      @buffer.puts "    <a href=\"#{path_to_html}\" style=\"text-decoration: none;\">"
+      @buffer.puts "      <pre align=\"center\">#{File.basename(path, '.*')}</pre>"
+      @buffer.puts "    </a>"
+      @buffer.puts "  </td>"
+      if curr_column == (max_columns - 1) then @buffer.puts "</tr>" end
       curr_column = (curr_column + 1) % (max_columns - 1)
     end
 
-    if (curr_column != 0) then @output.puts("</tr>") end
-    if (file_count > 0) then @output.puts("</table>") end
+    if (curr_column != 0) then @buffer.puts("</tr>") end
+    if (file_count > 0) then @buffer.puts("</table>") end
   end
 
   def example_pending(example)

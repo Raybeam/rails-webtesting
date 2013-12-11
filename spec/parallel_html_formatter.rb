@@ -6,13 +6,29 @@ require 'parallel_tests/rspec/logger_base'
 class ParallelHtmlFormatter < ParallelTests::RSpec::LoggerBase
   def initialize(output)
     super(output)
+
+    @buffer = StringIO.new
+    @header_buffer = StringIO.new
+
     @example_group_number = 0
     @example_number = 0
     @header_red = nil
-    @printer = RSpec::Core::Formatters::HtmlPrinter.new(@output)
+    @printer = RSpec::Core::Formatters::HtmlPrinter.new(@buffer)
 
-    @printer.print_html_start
-    @printer.flush
+    @header_printer = RSpec::Core::Formatters::HtmlPrinter.new(@header_buffer)
+
+    if ENV[:TEST_ENV_NUMBER.to_s] == ""
+      puts %[hello from process #{ENV[:TEST_ENV_NUMBER.to_s].inspect}]
+      puts ENV[:TEST_ENV_NUMBER.to_s].class
+      @header_printer.print_html_start
+      @header_buffer.puts "<input id=\"curr_duration\" type=\"hidden\" value=\"0\"/>"
+      @header_buffer.puts "<input id=\"curr_example_count\" type=\"hidden\" value=\"0\"/>"
+      @header_buffer.puts "<input id=\"curr_failure_count\" type=\"hidden\" value=\"0\"/>"
+      @output.puts @header_buffer.string
+      lock_output do
+        @output.flush
+      end
+    end
   end
 
   private
@@ -134,15 +150,35 @@ class ParallelHtmlFormatter < ParallelTests::RSpec::LoggerBase
   end
 
   def dump_summary(duration, example_count, failure_count, pending_count)
-    @printer.print_summary(
-      dry_run?,
-      duration,
-      example_count,
-      failure_count,
-      pending_count
-    )
+    # @printer.print_summary(
+    #   dry_run?,
+    #   duration,
+    #   example_count,
+    #   failure_count,
+    #   pending_count
+    # )
+    # TODO - kill dry_run?
+
+    formatted_duration = sprintf("%.5f", duration)
+
+    @buffer.puts "<script type=\"text/javascript\">"
+    @buffer.puts "  var curr_duration = parseFloat(document.getElementById('curr_duration').value) + #{formatted_duration};"
+    @buffer.puts "  document.getElementById('curr_duration').value = curr_duration;"
+    @buffer.puts "  document.getElementById('duration').innerHTML = 'Finished in <strong>' + curr_duration.toFixed(3) + ' seconds</strong>';"
+    @buffer.puts "</script>"
+    @buffer.puts "<script type=\"text/javascript\">"
+    @buffer.puts "  var curr_example_count = Number(document.getElementById('curr_example_count').value) + #{example_count};"
+    @buffer.puts "  var curr_failure_count = Number(document.getElementById('curr_failure_count').value) + #{failure_count};"
+    @buffer.puts "  document.getElementById('curr_example_count').value = curr_example_count;"
+    @buffer.puts "  document.getElementById('curr_failure_count').value = curr_failure_count;"
+    @buffer.puts "  document.getElementById('totals').innerHTML = curr_example_count + ' example(s),' + curr_failure_count + ' failure(s)';"
+    @buffer.puts "</script>"
+    @buffer.puts "</div>"
+    @buffer.puts "</div>"
+
     lock_output do
-      @printer.flush
+      @output.puts @buffer.string
+      @output.flush
     end
   end
 end
