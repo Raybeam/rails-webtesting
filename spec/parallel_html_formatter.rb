@@ -47,12 +47,10 @@ class ParallelHtmlFormatter < ParallelTests::RSpec::LoggerBase
       @printer.print_example_group_end
     end
     @printer.print_example_group_start( example_group_number, example_group.description, example_group.parent_groups.size )
-    @printer.flush
   end
 
   def start_dump
     @printer.print_example_group_end
-    @printer.flush
   end
 
   def example_started(example)
@@ -63,7 +61,6 @@ class ParallelHtmlFormatter < ParallelTests::RSpec::LoggerBase
   def example_passed(example)
     @printer.move_progress(percent_done)
     @printer.print_example_passed( example.description, example.execution_result[:run_time] )
-    @printer.flush
   end
 
   def example_failed(example)
@@ -101,7 +98,6 @@ class ParallelHtmlFormatter < ParallelTests::RSpec::LoggerBase
       (extra == "") ? false : extra,
       true
     )
-    @printer.flush
   end
 
   def example_pending(example)
@@ -110,7 +106,6 @@ class ParallelHtmlFormatter < ParallelTests::RSpec::LoggerBase
     @printer.make_example_group_header_yellow(example_group_number) unless @example_group_red
     @printer.move_progress(percent_done)
     @printer.print_example_pending( example.description, example.metadata[:execution_result][:pending_message] )
-    @printer.flush
   end
 
   # Override this method if you wish to output extra HTML for a failed spec. For example, you
@@ -146,6 +141,8 @@ class ParallelHtmlFormatter < ParallelTests::RSpec::LoggerBase
       failure_count,
       pending_count
     )
-    @printer.flush
+    lock_output do
+      @printer.flush
+    end
   end
 end

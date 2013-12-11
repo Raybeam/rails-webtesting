@@ -19,7 +19,6 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
   def example_passed(example)
     move_tmp_to_final(example)
     @printer.move_progress(percent_done)
-    @printer.flush
 
     description = example.metadata[:description_args].join('')
     run_time = example.execution_result[:run_time]
@@ -31,9 +30,6 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
     @output.puts "</div>"
 
     @output.puts "</dd>"
-
-
-    @output.flush
   end
 
   def example_failed(example)
@@ -61,8 +57,6 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
       false
     end
     extra = extra_failure_content(exception)
-
-    @printer.flush
 
     pending_fixed = example.execution_result[:pending_fixed]
     description = example.description
@@ -93,8 +87,6 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
     @output.puts "</div>"
     print_screenshot(example)
     @output.puts "    </dd>"
-
-    @output.flush
   end
 
   def example_group_started(example_group)
@@ -145,8 +137,6 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
 
     if (curr_column != 0) then @output.puts("</tr>") end
     if (file_count > 0) then @output.puts("</table>") end
-   
-    @output.flush
   end
 
   def example_pending(example)
