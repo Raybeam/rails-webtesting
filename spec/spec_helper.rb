@@ -64,19 +64,28 @@ RSpec.configure do |config|
   #   Capybara.use_default_driver
   # end
 
+  # TESTING SUITE
+  FileUtils.rm_rf($base_screenshot_dir)
+
   config.before(:each) do
+    example.metadata[:id] = @example_number
+    FileUtils.mkdir_p(path_to_tmp(example)) unless File.exists?(path_to_tmp(example))
     # puts path_to_screenshot(example)
 
     # FileUtils.mkdir_p(path_to_screenshot(example)) unless File.exists?(path_to_screenshot(example))
   end
 
   config.after(:each) do
-    # puts example.metadata[:description_args].join('')
+    #if example.metadata[:js]
+      # puts example.metadata[:description_args].join('')
 
-    result_name = example.exception ? "failure" : "final"
+      result_name = example.exception ? "failure" : "final"
 
-    save_snapshot(example,result_name)
+      save_snapshot(example,result_name)
+    #end
   end
+  # END TESTING SUITE
+
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

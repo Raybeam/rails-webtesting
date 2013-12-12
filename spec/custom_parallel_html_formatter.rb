@@ -13,7 +13,7 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
     # raise "output has to be a file path!" unless output.is_a?(String)
     @output_dir = File.dirname(@output)
 
-    FileUtils.rm_rf($base_screenshot_dir)
+    # FileUtils.rm_rf($base_screenshot_dir)
     # puts %[hello from process #{ENV[:TEST_ENV_NUMBER.to_s].inspect}]
     
   end
@@ -101,9 +101,6 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
 
   def example_started(example)
     super(example)
-
-    example.metadata[:id] = @example_number
-    FileUtils.mkdir_p(path_to_tmp(example)) unless File.exists?(path_to_tmp(example))
   end
 
   def print_screenshot(example)

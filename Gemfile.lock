@@ -28,6 +28,8 @@ GEM
     activesupport (3.2.14)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
+    annotate (2.5.0)
+      rake
     arel (3.0.3)
     bootstrap-sass (2.1.0.0)
     builder (3.0.4)
@@ -170,6 +172,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  annotate (= 2.5.0)
   bootstrap-sass (= 2.1)
   capybara (~> 2.1.0)
   ci_reporter
