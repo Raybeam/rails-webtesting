@@ -18,8 +18,8 @@ class ParallelHtmlFormatter < ParallelTests::RSpec::LoggerBase
     @header_printer = RSpec::Core::Formatters::HtmlPrinter.new(@header_buffer)
 
     if ENV[:TEST_ENV_NUMBER.to_s] == ""
-      puts %[hello from process #{ENV[:TEST_ENV_NUMBER.to_s].inspect}]
-      puts ENV[:TEST_ENV_NUMBER.to_s].class
+      # puts %[hello from process #{ENV[:TEST_ENV_NUMBER.to_s].inspect}]
+      # puts ENV[:TEST_ENV_NUMBER.to_s].class
       @header_printer.print_html_start
       @header_buffer.puts "<input id=\"curr_duration\" type=\"hidden\" value=\"0\"/>"
       @header_buffer.puts "<input id=\"curr_example_count\" type=\"hidden\" value=\"0\"/>"
