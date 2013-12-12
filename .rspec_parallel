@@ -1,3 +1,4 @@
 -r custom_parallel_html_formatter.rb
 --format CustomParallelHtmlFormatter
 -o spec/reports/HTML/index.html
+--format CI::Reporter::RSpec
