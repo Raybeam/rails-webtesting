@@ -17,7 +17,7 @@ describe "Static pages" do
     # end
 
     it "should have default title", :js => true do
-      should have_title(full_title('abc'))
+      should have_title(full_title(''))
     end
 
     # it "should have default title2", :js => true do
