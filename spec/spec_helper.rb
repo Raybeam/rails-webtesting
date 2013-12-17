@@ -3,89 +3,13 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
-# require 'ci/reporter/rake/rspec'     # use this if you're using RSpec
-# require "selenium-webdriver"
-# require 'capybara/rails'
-# require 'capybara/rspec'
 
-
-
-
-
-Capybara.javascript_driver = :selenium
-Capybara.default_driver = :rack_test
-
-
-# Capybara remote run
-require 'system/getifaddrs'
-
-# # init ip
-caps = Selenium::WebDriver::Remote::Capabilities.chrome
-# caps.version = "8"
-caps.platform = :WINDOWS
-host = "10.242.1.187"
-port = "4444"
-ip = System.get_ifaddrs.find{ |socket| socket[1][:inet_addr] != "127.0.0.1" } [1][:inet_addr]
-
-Capybara.server_port = 3010
-Capybara.app_host = "http://#{ip}:#{Capybara.server_port}"
-Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(
-    app,
-    :browser => :remote,
-    :url => "http://#{host}:#{port}/wd/hub",
-    :desired_capabilities => caps
-    )
-end
-
-# Capybara local run
-# Capybara.register_driver :selenium do |app|
-#   Capybara::Selenium::Driver.new(app, :browser => :chrome)
-# end
-
-# require 'capybara/poltergeist'
-# Capybara.default_driver = :poltergeist
-# Capybara.javascript_driver = :poltergeist
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-
-
 RSpec.configure do |config|
-  config.include Capybara::RSpecMatchers
-  config.include Capybara::DSL
-  config.include Rails.application.routes.url_helpers
-
-  # use default driver on all tests
-  # config.after do
-  #   Capybara.reset_sessions!
-  #   Capybara.use_default_driver
-  # end
-
-  # TESTING SUITE
-  FileUtils.rm_rf($base_screenshot_dir)
-
-  config.before(:each) do
-    example.metadata[:id] = @example_number
-    FileUtils.mkdir_p(path_to_tmp(example)) unless File.exists?(path_to_tmp(example))
-    # puts path_to_screenshot(example)
-
-    # FileUtils.mkdir_p(path_to_screenshot(example)) unless File.exists?(path_to_screenshot(example))
-  end
-
-  config.after(:each) do
-    #if example.metadata[:js]
-      # puts example.metadata[:description_args].join('')
-
-      result_name = example.exception ? "failure" : "final"
-
-      save_snapshot(example,result_name)
-    #end
-  end
-  # END TESTING SUITE
-
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -112,4 +36,11 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  # stub in Capybara's reset which attempts to close browser
+  # Capybara::Selenium::Driver.class_eval do
+  #   def reset!
+  #     puts "preventing reset to about page"
+  #   end
+  # end
 end

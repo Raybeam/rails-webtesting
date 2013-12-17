@@ -85,10 +85,12 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
     @buffer.puts extra_content if extra_content
     @buffer.puts "      </div>"
 
+    @buffer.puts "<div class=\"rerun_command\">bundle exec rspec " + example.metadata[:file_path] + ":" + example.metadata[:line_number].to_s + "</div>"
     @buffer.puts "<div class=\"screenshots\">"
     @buffer.puts "</div>"
     print_screenshot(example)
     @buffer.puts "    </dd>"
+
   end
 
   def example_group_started(example_group)
@@ -145,13 +147,7 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
   def extra_failure_content(failure)
     content = []
     content << "<span>"
-
-    file_name = save_html
-    content << link_for(file_name)
-    
-    file_name = save_screenshot
-    content << link_for(file_name)
-
+    content << ""
     content << "</span>"
     super + content.join($/)
   end

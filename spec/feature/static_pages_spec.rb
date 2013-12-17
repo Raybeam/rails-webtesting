@@ -20,6 +20,10 @@ describe "Static pages" do
       should have_title(full_title('abc'))
     end
 
+    # it "should have default title2", :js => true do
+    #   should have_title(full_title('abc'))
+    # end
+
     describe "title" do
       it "should not have default title for Home" do
         should_not have_title('| Home')

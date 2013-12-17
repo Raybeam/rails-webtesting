@@ -12,7 +12,7 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
     # raise "output has to be a file path!" unless output.is_a?(String)
     @output_dir = File.dirname(output)
 
-    FileUtils.rm_rf($base_screenshot_dir)
+    # FileUtils.rm_rf($base_screenshot_dir)
     super
   end
 
@@ -88,6 +88,8 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
     @output.puts extra_content if extra_content
     @output.puts "      </div>"
 
+    @output.puts example.metadata.to_s
+    @output.puts "<div class=\"rerun_command\">bundle exec rspec " + example.metadata[:file_path] + ":" + example.metadata[:line_number].to_s + "</div>"
     @output.puts "<div class=\"screenshots\">"
     @output.puts "</div>"
     print_screenshot(example)
@@ -107,8 +109,8 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
   def example_started(example)
     super(example)
 
-    example.metadata[:id] = @example_number
-    FileUtils.mkdir_p(path_to_tmp(example)) unless File.exists?(path_to_tmp(example))
+    # example.metadata[:id] = @example_number
+    # FileUtils.mkdir_p(path_to_tmp(example)) unless File.exists?(path_to_tmp(example))
     
   end
 
@@ -156,13 +158,7 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
   def extra_failure_content(failure)
     content = []
     content << "<span>"
-
-    file_name = save_html
-    content << link_for(file_name)
-    
-    file_name = save_screenshot
-    content << link_for(file_name)
-
+    content << ""
     content << "</span>"
     super + content.join($/)
   end
