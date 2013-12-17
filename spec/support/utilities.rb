@@ -8,7 +8,6 @@ def full_title(page_title)
 end
 
 $base_screenshot_dir = 'spec/reports/HTML/screenshots'
-$base_html_path = 'spec/reports/HTML/index.html'
 
 def save_snapshot(example,filename)
     save_html_to_file(example, filename)
