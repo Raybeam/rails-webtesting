@@ -13,6 +13,7 @@ RSpec.configure do |config|
 
   # TESTING SUITE
   FileUtils.rm_rf($base_screenshot_dir)
+  FileUtils.rm_f($base_html_path)
 
   config.before(:each) do
     example.metadata[:id] = @example_number
