@@ -2,3 +2,4 @@
 --format CustomParallelHtmlFormatter
 -o spec/reports/HTML/index.html
 --format CI::Reporter::RSpec
+-r remote.rb

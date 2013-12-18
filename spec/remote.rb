@@ -1,3 +1,5 @@
+puts "loading support/remote.rb"
+
 require File.expand_path("../../config/environment", __FILE__)
 require 'capybara/rails'
 require 'system/getifaddrs'
