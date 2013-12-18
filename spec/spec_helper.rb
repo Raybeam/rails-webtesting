@@ -37,10 +37,9 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  config.before(:all) do
-    puts 1
-    puts Capybara.current_session.server.host
-    puts Capybara.current_session.server.port
-    puts Capybara.current_session.server
-  end
+  # config.before(:all) do
+  #   puts Capybara.current_session.server.host
+  #   puts Capybara.current_session.server.port
+  #   puts Capybara.current_session.server
+  # end
 end
