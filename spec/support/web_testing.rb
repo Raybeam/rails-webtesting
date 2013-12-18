@@ -1,3 +1,5 @@
+require_relative 'utilities'
+
 puts "loading support/web_testing.rb"
 
 RSpec.configure do |config|
