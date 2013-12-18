@@ -8,6 +8,7 @@ def full_title(page_title)
 end
 
 $base_screenshot_dir = 'spec/reports/HTML/screenshots'
+$local_run_args = ' -r html_formatter.rb -f CapybaraHtmlFormatter -o spec/reports/HTML/index.html -r fail_fast.rb -r local.rb '
 
 def save_snapshot(example,filename)
     save_html_to_file(example, filename)

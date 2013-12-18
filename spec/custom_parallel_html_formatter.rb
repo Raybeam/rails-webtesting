@@ -85,7 +85,7 @@ class CustomParallelHtmlFormatter < ParallelHtmlFormatter
     @buffer.puts extra_content if extra_content
     @buffer.puts "      </div>"
 
-    @buffer.puts "<div class=\"rerun_command\">bundle exec rspec " + example.metadata[:file_path] + ":" + example.metadata[:line_number].to_s + "</div>"
+    @buffer.puts "<div class=\"rerun_command\">bundle exec rspec " + example.metadata[:file_path] + ":" + example.metadata[:line_number].to_s + $local_run_args + "</div>"
     @buffer.puts "<div class=\"screenshots\">"
     @buffer.puts "</div>"
     print_screenshot(example)

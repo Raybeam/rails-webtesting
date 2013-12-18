@@ -37,10 +37,10 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  # stub in Capybara's reset which attempts to close browser
-  # Capybara::Selenium::Driver.class_eval do
-  #   def reset!
-  #     puts "preventing reset to about page"
-  #   end
-  # end
+  config.before(:all) do
+    puts 1
+    puts Capybara.current_session.server.host
+    puts Capybara.current_session.server.port
+    puts Capybara.current_session.server
+  end
 end

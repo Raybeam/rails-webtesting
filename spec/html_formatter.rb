@@ -88,8 +88,7 @@ class CapybaraHtmlFormatter < RSpec::Core::Formatters::HtmlFormatter
     @output.puts extra_content if extra_content
     @output.puts "      </div>"
 
-    @output.puts example.metadata.to_s
-    @output.puts "<div class=\"rerun_command\">bundle exec rspec " + example.metadata[:file_path] + ":" + example.metadata[:line_number].to_s + "</div>"
+    @output.puts "<div class=\"rerun_command\">bundle exec rspec " + example.metadata[:file_path] + ":" + example.metadata[:line_number].to_s + $local_run_args + "</div>"
     @output.puts "<div class=\"screenshots\">"
     @output.puts "</div>"
     print_screenshot(example)

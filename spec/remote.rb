@@ -27,3 +27,13 @@ Capybara.register_driver :selenium do |app|
     :desired_capabilities => caps
     )
 end
+
+# RSpec.configure do |config|
+# 	config.after(:each) do
+# 		puts Capybara.app_host
+# 		puts Capybara.server_port
+# 		puts Capybara.current_session.server
+# 	end
+# end
+
+

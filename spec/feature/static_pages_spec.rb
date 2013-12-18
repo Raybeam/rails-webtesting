@@ -21,7 +21,7 @@ describe "Static pages" do
     end
 
     it "should fail for demonstration", :js => true do
-      should have_title(full_title('abc'))
+      should have_title(full_title(''))
     end
 
     describe "title" do
