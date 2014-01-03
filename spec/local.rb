@@ -1,4 +1,5 @@
 require File.expand_path("../../config/environment", __FILE__)
+require_relative 'support/config'
 require 'capybara/rails'
 
 puts "loading local.rb"
