@@ -9,9 +9,8 @@ def set_app_address()
     require 'system/getifaddrs'
     ip = $webserver_ip != nil ? $webserver_ip : System.get_ifaddrs.find{ |socket| socket[1][:inet_addr] != "127.0.0.1" } [1][:inet_addr]
     port = $webserver_port != nil ? $webserver_port : Capybara.current_session.server.port
-    # Capybara.server_port = Capybara.current_session.server.port
-    # Capybara.server_port = 3010
     Capybara.app_host = "http://#{ip}:#{port}"
+    # puts "Registering http://#{ip}:#{port} as root server"
 end
 
 Capybara.javascript_driver = :selenium

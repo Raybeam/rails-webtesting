@@ -1,7 +1,7 @@
 require File.expand_path("../../config/environment", __FILE__)
-require_relative 'support/config'
 require 'rspec/rails'
 require 'capybara/rails'
+require_relative 'support/config'
 
 puts "loading fail_fast.rb"
 
@@ -26,7 +26,7 @@ RSpec.configure do |config|
         end
       end
       
-      # stub in Capybara's reset which attempts to close browser
+      # stub in Capybara's reset which to resets browser to about page
       Capybara::Selenium::Driver.class_eval do
         def reset!
           puts "preventing reset to about page"

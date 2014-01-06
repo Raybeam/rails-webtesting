@@ -7,9 +7,10 @@ gem 'bootstrap-sass', '2.1'
 gem 'bcrypt-ruby', '3.0.1'
 
 gem 'therubyracer'
-gem "system-getifaddrs", "~> 0.2.0"
+
 
 group :development, :test do
+  gem "system-getifaddrs", "~> 0.2.0"
   gem 'sqlite3', '1.3.5'
 
   gem 'rspec-rails', '~> 2.0'
