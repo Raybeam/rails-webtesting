@@ -17,14 +17,18 @@ RSpec.configure do |config|
   FileUtils.rm_rf($base_screenshot_dir)
 
   config.before(:each) do
-    example.metadata[:id] = @example_number
-    FileUtils.mkdir_p(path_to_tmp(example)) unless File.exists?(path_to_tmp(example))    
+    if example.metadata[:type] != :model
+      example.metadata[:id] = @example_number
+      FileUtils.mkdir_p(path_to_tmp(example)) unless File.exists?(path_to_tmp(example))
+    end
   end
 
   config.after(:each) do
-    result_name = example.exception ? "failure" : "final"
+    if example.metadata[:type] != :model
+      result_name = example.exception ? "failure" : "final"
 
-    save_snapshot(example,result_name)
+      save_snapshot(example,result_name)
+    end
   end
   # END TESTING SUITE
 end
