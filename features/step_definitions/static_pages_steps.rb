@@ -1,7 +1,5 @@
-
-
 Given(/^I am a guest$/) do
-	a=1	
+
 end
 
 When(/^I go to (.+)$/) do |path_name|

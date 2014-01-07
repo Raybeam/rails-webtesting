@@ -21,3 +21,4 @@ spec/screenshots/
 
 .rspec_parallel
 .rspec
+.idea/
