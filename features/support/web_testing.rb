@@ -15,7 +15,9 @@ After do |scenario|
   # if(scenario.failed?)
     img_name = "#{scenario.__id__}.png"
     path_to_img = File.join($base_report_dir,img_name)
+
     page.save_screenshot(path_to_img)
-    embed(img_name, "image/png", "SCREENSHOT")
+
+    self.embed(path_to_img, "image/png", "SCREENSHOT")
   # end
 end
