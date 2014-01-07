@@ -22,3 +22,4 @@ spec/screenshots/
 .rspec_parallel
 .rspec
 .idea/
+features/report/
