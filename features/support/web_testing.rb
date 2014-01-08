@@ -1,12 +1,12 @@
 require 'capybara/cucumber'
-require 'capybara/poltergeist'
+#require 'capybara/poltergeist'
 require_relative 'config'
 
-Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome)
-end
-
-Capybara.default_driver = :selenium
+#Capybara.register_driver :selenium do |app|
+#  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+#end
+#
+#Capybara.default_driver = :selenium
 
 FileUtils.rm_rf($base_report_dir)
 FileUtils.mkdir($base_report_dir)
