@@ -31,8 +31,6 @@ Capybara.register_driver :selenium do |app|
   )
 end
 
-
-
 set_app_address()
 
 
