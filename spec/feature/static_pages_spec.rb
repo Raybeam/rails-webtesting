@@ -9,12 +9,10 @@ describe "Static pages" do
       visit root_path
       save_snapshot(example,"start")
     }
-    # after {
-    #   save_screenshot("#{path_to_screenshot(example)}/end.png")
-    # }
-    # it "should have h1 element with text Sample App" do
-    #   should have_selector('h1',    text: 'Sample App')
-    # end
+
+    it "should have h1 element with text Sample App" do
+       should have_selector('h1',    text: 'Sample App')
+    end
 
     it "should have default title", :js => true do
       should have_title(full_title(''))
@@ -31,24 +29,24 @@ describe "Static pages" do
     end
   end
 
-  # describe "Help page" do
-  #   before { visit help_path }
+  describe "Help page" do
+     before { visit help_path }
 
-  #   it { should have_selector('h1',    text: 'Help') }
-  #   it { should have_title(full_title('Help')) }
-  # end
+     it { should have_selector('h1',    text: 'Help') }
+     it { should have_title(full_title('Help')) }
+  end
 
-  # describe "About page" do
-  #   before { visit about_path }
+  describe "About page" do
+     before { visit about_path }
 
-  #   it { should have_selector('h1',    text: 'About') }
-  #   it { should have_title(full_title('About Us')) }
-  # end
+     it { should have_selector('h1',    text: 'About') }
+     it { should have_title(full_title('About Us')) }
+  end
 
-  # describe "Contact page" do
-  #   before { visit contact_path }
+  describe "Contact page" do
+     before { visit contact_path }
 
-  #   it { should have_selector('h1',    text: 'Contact') }
-  #   it { should have_title(full_title('Contact')) }
-  # end
+     it { should have_selector('h1',    text: 'Contact') }
+     it { should have_title(full_title('Contact')) }
+  end
 end

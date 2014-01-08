@@ -10,7 +10,7 @@ def set_app_address()
   ip = $webserver_ip != nil ? $webserver_ip : System.get_ifaddrs.find{ |socket| socket[1][:inet_addr] != "127.0.0.1" } [1][:inet_addr]
   port = $webserver_port != nil ? $webserver_port : Capybara.current_session.server.port
   Capybara.app_host = "http://#{ip}:#{port}"
-  puts "Registering http://#{ip}:#{port} as root server"
+  #puts "Registering http://#{ip}:#{port} as root server"
 end
 
 Capybara.javascript_driver = :selenium
@@ -31,6 +31,9 @@ Capybara.register_driver :selenium do |app|
   )
 end
 
-set_app_address()
+Before do |scenario|
+  set_app_address()
+end
+
 
 

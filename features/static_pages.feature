@@ -8,3 +8,9 @@ Feature: Static Pages
 		When I go to homepage
 		Then title is default title.
 
+    Scenario: Home Page
+      Given I am a guest
+      When I go to homepage
+      And click on link to sign up
+      Then "Sign up" is visible
+
