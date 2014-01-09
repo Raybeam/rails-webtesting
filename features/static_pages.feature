@@ -3,12 +3,12 @@ Feature: Static Pages
 	As a guest
 	I want to visit static pages and verify layout
 
-	Scenario: Home Page
+	Scenario: Proper Home Page Title
 		Given I am a guest
 		When I go to homepage
 		Then title is default title.
 
-    Scenario: Home Page
+    Scenario: Link to Signup from Home Page
       Given I am a guest
       When I go to homepage
       And click on link to sign up
